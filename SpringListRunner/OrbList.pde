@@ -43,7 +43,9 @@ class OrbList {
     Insert o to the beginning of the list.
     =========================*/
   void addFront(OrbNode o) {
-
+      o.next = front;
+      front.previous = o;
+      front = o;
   }//addFront
 
 
@@ -58,7 +60,13 @@ class OrbList {
     SPRING_LEGNTH apart horizontally.
     =========================*/
   void populate(int n, boolean ordered) {
-
+      for (int i = 0; i < n; i++){
+          // creates different orb nodes based on if ordered is true
+          OrbNode o = ordered ? 
+              new OrbNode() : 
+              new OrbNode(SPRING_LENGTH * (i + 0.5), width / 2, random(10, MAX_SIZE), random(10, 100));
+          addFront(o);
+      }
   }//populate
 
   /*===========================
@@ -68,7 +76,11 @@ class OrbList {
     the display method defined in the OrbNode class.
     =========================*/
   void display() {
-
+      OrbNode iter = front;
+      while (iter != null){
+          iter.display();
+          iter = iter.next;
+      }
   }//display
 
   /*===========================
@@ -78,7 +90,11 @@ class OrbList {
     element in the list.
     =========================*/
   void applySprings(int springLength, float springK) {
-
+      OrbNode iter = front;
+      while (iter != null){
+          iter.applySprings(springLength, springK);
+          iter = iter.next;
+      }
   }//applySprings
 
   /*===========================
@@ -88,7 +104,11 @@ class OrbList {
     to apply gravity crrectly.
     =========================*/
   void applyGravity(Orb other, float gConstant) {
-
+      OrbNode iter = front;
+      while (iter != null){
+          iter.applyForce(iter.getGravity(other, gConstant));
+          iter = iter.next;
+      }
   }//applySprings
 
   /*===========================
@@ -96,8 +116,12 @@ class OrbList {
 
     Call run on each node in the list.
     =========================*/
-  void run(boolean boucne) {
-
+  void run(boolean bounce) {
+      OrbNode iter = front;
+      while (iter != null){
+          iter.move(bounce);
+          iter = iter.next;
+      }
   }//applySprings
 
   /*===========================
