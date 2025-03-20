@@ -43,6 +43,10 @@ class OrbList {
     Insert o to the beginning of the list.
     =========================*/
   void addFront(OrbNode o) {
+      if (front == null){
+        front = o;
+        return;
+      }
       o.next = front;
       front.previous = o;
       front = o;
@@ -60,6 +64,7 @@ class OrbList {
     SPRING_LEGNTH apart horizontally.
     =========================*/
   void populate(int n, boolean ordered) {
+      front = null;
       for (int i = 0; i < n; i++){
           // creates different orb nodes based on if ordered is true
           OrbNode o = ordered ? 
@@ -132,7 +137,8 @@ class OrbList {
     should now be the first (and so on).
     =========================*/
   void removeFront() {
-
+    front = front.next;
+    front.previous = null;
   }//removeFront
 
 
@@ -147,7 +153,13 @@ class OrbList {
     the Orb class (line 115).
     =========================*/
   OrbNode getSelected(int x, int y) {
-
+    OrbNode iter = front;
+    while (iter != null){
+      if (iter.center.dist(new PVector(x, y)) < 1){
+        return iter;
+      }
+      iter = iter.next;
+    }
     return null;
   }//getSelected
 
@@ -160,5 +172,14 @@ class OrbList {
     position of o in the list.
     =========================*/
   void removeNode(OrbNode o) {
+    OrbNode iter = front; 
+    while (iter != null){
+      if (iter == o){
+        iter.previous.next = iter.next;
+        iter.next.previous = iter.previous;
+        return;
+      }
+      iter = iter.next;
+    }
   }
 }//OrbList
